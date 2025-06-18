@@ -195,6 +195,21 @@
         .hidden {
             display: none;
         }
+
+        @media (max-width: 900px) {
+            main {
+                flex-direction: column !important;
+                align-items: center !important;
+                gap: 40px !important;
+                padding: 0 20px;
+            }
+
+            .card,
+            .result-card {
+                width: 100% !important;
+                max-width: 420px;
+            }
+        }
     </style>
 </head>
 
@@ -212,16 +227,16 @@
                 <div class="row">
                     <div class="input-group">
                         <label for="data">Data da Emissão</label>
-                        <input type="text" id="data" maxlength="10" />
+                        <input type="text" id="data" value="17/06/2025" maxlength="10" />
                     </div>
                     <div class="input-group">
                         <label for="hora">Hora da Emissão</label>
-                        <input type="text" id="hora" maxlength="8" />
+                        <input type="text" id="hora" value="13:35:00" maxlength="8" />
                     </div>
                 </div>
                 <div class="input-group">
                     <label for="autenticacao">Código de Controle</label>
-                    <input type="text" id="autenticacao" maxlength="19" />
+                    <input type="text" id="autenticacao" value="PZ16.NR5N.G2A5.43X8" maxlength="19" />
                 </div>
             </div>
             <div class="card-footer">

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Autenticação de Documentos - Uniube</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            background: url('/padrao.fw.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            padding-top: 60px;
+            flex-direction: column;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .card {
+            width: 420px;
+            background: #f4f4f4;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .card-header {
+            background-color: #313a46;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card-header img {
+            width: 156px;
+            height: 46px;
+        }
+
+        .card-body {
+            padding: 5px 20px 0px 20px;
+            color: #313a46;
+            display: flex;
+            flex-direction: column;
+            gap: 26px;
+        }
+
+        .card-body h2 {
+            font-size: 13px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 30px;
+            white-space: nowrap;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .row .input-group {
+            flex: 1;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #313a46;
+            padding: 10px;
+        }
+
+        .card-footer button {
+            flex: 1;
+            padding: 10px 0;
+            background: transparent;
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .card-footer .divider {
+            width: 1px;
+            background: #fff;
+            height: 100%;
+        }
+
+        .result-card {
+            width: 420px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            background: #fff;
+            height: fit-content;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .result-success .result-header {
+            background: #056F31;
+        }
+
+        .result-error .result-header {
+            background: #a52323;
+        }
+
+        .result-header img {
+            width: 156px;
+            height: 46px;
+        }
+
+        .result-body {
+            padding: 20px;
+        }
+
+        .result-body h3 {
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .result-success h3 {
+            color: #056F31;
+        }
+
+        .result-error h3 {
+            color: #a52323;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            padding: 6px 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .result-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .result-buttons button {
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 4px;
+        }
+
+        .result-buttons .fa {
+            margin-right: 5px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <main style="display: flex
+;
+    gap: 100px;">
+
+        <form class="card" onsubmit="validarAutenticacao(); return false;" onreset="resetResultado()">
+            <div class="card-header">
+                <img src="/logo.png" alt="Universidade de Uberaba" />
+            </div>
+            <div class="card-body">
+                <h2>CONFIRMAÇÃO DA AUTENTICIDADE DE DOCUMENTOS</h2>
+                <div class="row">
+                    <div class="input-group">
+                        <label for="data">Data da Emissão</label>
+                        <input type="text" id="data" maxlength="10" />
+                    </div>
+                    <div class="input-group">
+                        <label for="hora">Hora da Emissão</label>
+                        <input type="text" id="hora" maxlength="8" />
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="autenticacao">Código de Controle</label>
+                    <input type="text" id="autenticacao" maxlength="19" />
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="submit">VERIFICAR</button>
+                <div class="divider"></div>
+                <button type="reset">NOVA CONSULTA</button>
+            </div>
+        </form>
+
+        <div id="resultadoPositivo" class="result-card hidden"
+            style="border-radius: 10px; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.2); width: 420px; font-family: Arial, sans-serif;">
+            <div style="background-color: #056F31; border-radius: 10px 10px 0 0; padding: 1.5rem; text-align: center;">
+                <img src="/logo.png" alt="Uniube" style="width: 156px; height: 46px;" />
+            </div>
+            <div style="padding: 10px 20px;">
+                <p style="text-align: center; font-weight: 600; color: #056F31; font-size: 14px; margin: 20px 0 15px;">
+                    Autenticidade do documento confirmada.</p>
+
+                <div
+                    style="background: #fff; border: 1px solid #0000001a; border-radius: 8px; padding: 10px 15px; margin-bottom: 10px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 14px; padding: 5px 0;">
+                        <span style="color:#056F31;">Registro Acadêmico:</span>
+                        <span><strong>1198416</strong></span>
+                    </div>
+                    <div style="height: 1px; background-color: #e0e0e0;"></div>
+                    <div style="display: flex; justify-content: space-between; font-size: 14px; padding: 5px 0;">
+                        <span style="color:#056F31;">Nome:</span>
+                        <span>VINICIUS GOMES FRANCO</span>
+                    </div>
+                    <div style="height: 1px; background-color: #e0e0e0;"></div>
+                    <div style="display: flex; justify-content: space-between; font-size: 14px; padding: 5px 0;">
+                        <span style="color:#056F31;">Data da Emissão:</span>
+                        <span>17/09/2024</span>
+                    </div>
+                    <div style="height: 1px; background-color: #e0e0e0;"></div>
+                    <div style="display: flex; justify-content: space-between; font-size: 14px; padding: 5px 0;">
+                        <span style="color:#056F31;">Hora da Emissão:</span>
+                        <span>17:35:00</span>
+                    </div>
+                    <div style="height: 1px; background-color: #e0e0e0;"></div>
+                    <div style="display: flex; justify-content: space-between; font-size: 14px; padding: 5px 0;">
+                        <span style="color:#056F31;">Código de Controle:</span>
+                        <span>PZ16.NR5N.G2A5.43X8</span>
+                    </div>
+                </div>
+
+                <div style="font-size: 14px; padding-left: 4px; padding-top: 8px;">
+                    <span style="color: #056F31;">Validade até:</span>
+                    <span>17/10/2025</span>
+                </div>
+
+                <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 20px;">
+                    <button onclick="alert('Documento exibido')"
+                        style="padding: 10px 15px; border: 1px solid #ccc; background: #fff; border-radius: 4px; cursor: pointer;">
+                        VISUALIZAR DOCUMENTO
+                    </button>
+                    <button onclick="window.print()"
+                        style="padding: 10px 15px; border: 1px solid #ccc; background: #fff; border-radius: 4px; cursor: pointer;">
+                        <i class="fa fa-print"></i> IMPRIMIR
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="resultadoNegativo" class="result-card result-error hidden">
+            <div class="result-header">
+                <img src="/logo.png" alt="Uniube" />
+            </div>
+            <div class="result-body">
+                <h3>Autenticidade do documento não confirmada!</h3>
+                <div class="result-buttons">
+                    <button onclick="window.print()"><i class="fa fa-print"></i>IMPRIMIR</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        function validarAutenticacao() {
+            const cod = document.getElementById("autenticacao").value.trim().toUpperCase();
+            const positivo = document.getElementById("resultadoPositivo");
+            const negativo = document.getElementById("resultadoNegativo");
+
+            positivo.classList.add("hidden");
+            negativo.classList.add("hidden");
+
+            if (cod === "PZ16.NR5N.G2A5.43X8") {
+                positivo.classList.remove("hidden");
+            } else {
+                negativo.classList.remove("hidden");
+            }
+        }
+
+        function resetResultado() {
+            document.getElementById("resultadoPositivo").classList.add("hidden");
+            document.getElementById("resultadoNegativo").classList.add("hidden");
+        }
+    </script>
+</body>
+
+</html>
